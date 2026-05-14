@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
@@ -79,6 +80,51 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
 
                     // Now make the binder visible
                     managerBinder = localBinder;
+
+
+                    String ip = getIntent().getStringExtra("computer_ip");
+                    int port = getIntent().getIntExtra("computer_port", 47989);
+
+
+                    if (ip != null && !ip.isEmpty()) {
+
+                        try {
+
+                            ComputerDetails details = new ComputerDetails();
+
+                            details.manualAddress =
+                                    new ComputerDetails.AddressTuple(ip, port);
+
+                            boolean success =
+                                    managerBinder.addComputerBlocking(details);
+
+
+                            runOnUiThread(() -> {
+
+                                if (success) {
+
+
+
+
+                                } else {
+
+                                    Toast.makeText(
+                                            PcView.this,
+                                            "Falha ao conectar",
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                }
+                            });
+
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+                        }
+                    }
+
+                    new AndroidCryptoProvider(PcView.this)
+                            .getClientCertificate();
 
                     // Start updates
                     startComputerUpdates();
@@ -169,22 +215,39 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
         }
 
         getFragmentManager().beginTransaction()
-            .replace(R.id.pcFragmentContainer, new AdapterFragment())
-            .commitAllowingStateLoss();
+                .replace(R.id.pcFragmentContainer, new AdapterFragment())
+                .commitAllowingStateLoss();
 
         noPcFoundLayout = findViewById(R.id.no_pc_found_layout);
         if (pcGridAdapter.getCount() == 0) {
             noPcFoundLayout.setVisibility(View.VISIBLE);
+
         }
         else {
             noPcFoundLayout.setVisibility(View.INVISIBLE);
         }
+
+
+
         pcGridAdapter.notifyDataSetChanged();
+
+
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        );
 
         // Assume we're in the foreground when created to avoid a race
         // between binding to CMS and onResume()
@@ -193,6 +256,9 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
         // Create a GLSurfaceView to fetch GLRenderer unless we have
         // a cached result already.
         final GlPreferences glPrefs = GlPreferences.readPreferences(this);
+
+
+
         if (!glPrefs.savedFingerprint.equals(Build.FINGERPRINT) || glPrefs.glRenderer.isEmpty()) {
             GLSurfaceView surfaceView = new GLSurfaceView(this);
             surfaceView.setRenderer(new GLSurfaceView.Renderer() {
@@ -230,6 +296,8 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
     }
 
     private void completeOnCreate() {
+
+
         completeOnCreateCalled = true;
 
         shortcutHelper = new ShortcutHelper(this);
@@ -241,6 +309,8 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
                 Service.BIND_AUTO_CREATE);
 
         pcGridAdapter = new PcGridAdapter(this, PreferenceConfiguration.readPreferences(this));
+
+
 
         initializeViews();
     }
@@ -331,13 +401,15 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
 
         // Call superclass
         super.onCreateContextMenu(menu, v, menuInfo);
-                
+
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         ComputerObject computer = (ComputerObject) pcGridAdapter.getItem(info.position);
 
         // Add a header with PC status details
         menu.clearHeader();
         String headerTitle = computer.details.name + " - ";
+
+
         switch (computer.details.state)
         {
             case ONLINE:
@@ -356,7 +428,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
 
         // Inflate the context menu
         if (computer.details.state == ComputerDetails.State.OFFLINE ||
-            computer.details.state == ComputerDetails.State.UNKNOWN) {
+                computer.details.state == ComputerDetails.State.UNKNOWN) {
             menu.add(Menu.NONE, WOL_ID, 1, getResources().getString(R.string.pcview_menu_send_wol));
             menu.add(Menu.NONE, GAMESTREAM_EOL_ID, 2, getResources().getString(R.string.pcview_menu_eol));
         }
@@ -424,10 +496,23 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
                     else {
                         final String pinStr = PairingManager.generatePinString();
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(getApplicationContext(), PinViewActivity.class);
+                                i.putExtra("pin", pinStr);
+                                startActivity(i);
+                            }
+                        });
+
+
+
+                        /*
                         // Spin the dialog off in a thread because it blocks
                         Dialog.displayDialog(PcView.this, getResources().getString(R.string.pair_pairing_title),
                                 getResources().getString(R.string.pair_pairing_msg)+" "+pinStr+"\n\n"+
                                 getResources().getString(R.string.pair_pairing_help), false);
+                        */
 
                         PairingManager pm = httpConn.getPairingManager();
 
@@ -582,6 +667,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
         }).start();
     }
 
+
     private void doAppList(ComputerDetails computer, boolean newlyPaired, boolean showHiddenGames) {
         if (computer.state == ComputerDetails.State.OFFLINE) {
             Toast.makeText(PcView.this, getResources().getString(R.string.error_pc_offline), Toast.LENGTH_SHORT).show();
@@ -679,7 +765,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
                 return super.onContextItemSelected(item);
         }
     }
-    
+
     private void removeComputer(ComputerDetails details) {
         managerBinder.removeComputer(details);
 
@@ -711,7 +797,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
             }
         }
     }
-    
+
     private void updateComputer(ComputerDetails details) {
         ComputerObject existingEntry = null;
 
@@ -737,8 +823,10 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
             noPcFoundLayout.setVisibility(View.INVISIBLE);
         }
 
+
         // Notify the view that the data has changed
         pcGridAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -755,7 +843,7 @@ public class PcView extends Activity implements AdapterFragmentCallbacks {
                                     long id) {
                 ComputerObject computer = (ComputerObject) pcGridAdapter.getItem(pos);
                 if (computer.details.state == ComputerDetails.State.UNKNOWN ||
-                    computer.details.state == ComputerDetails.State.OFFLINE) {
+                        computer.details.state == ComputerDetails.State.OFFLINE) {
                     // Open the context menu if a PC is offline or refreshing
                     openContextMenu(arg1);
                 } else if (computer.details.pairState != PairState.PAIRED) {

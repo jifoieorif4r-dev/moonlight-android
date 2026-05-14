@@ -5,7 +5,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PcView" >
+    tools:context=".PcView"
+    android:background="#000">
 
     <RelativeLayout
         android:id="@+id/pcFragmentContainer"
@@ -53,7 +54,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_settings"
+        android:src="@drawable/sett"
         style="?android:attr/borderlessButtonStyle"/>
 
     <ImageButton
@@ -66,7 +67,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/settingsButton"
-        android:src="@drawable/ic_help"
+        android:src="@drawable/www"
         style="?android:attr/borderlessButtonStyle"/>
 
     <ImageButton
@@ -78,7 +79,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/helpButton"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/addsquare"
         style="?android:attr/borderlessButtonStyle"/>
 
 </RelativeLayout>

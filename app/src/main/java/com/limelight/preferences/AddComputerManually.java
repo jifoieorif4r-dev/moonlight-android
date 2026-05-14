@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.limelight.PcView;
 import com.limelight.binding.PlatformBinding;
 import com.limelight.computers.ComputerManagerService;
 import com.limelight.R;
@@ -201,7 +202,10 @@ public class AddComputerManually extends Activity {
 
                 if (!isFinishing()) {
                     // Close the activity
-                    AddComputerManually.this.finish();
+                    //AddComputerManually.this.finish();
+
+                    Intent i = new Intent(getApplicationContext(), PcView.class);
+                    startActivity(i);
                 }
                 }
             });
@@ -317,7 +321,7 @@ public class AddComputerManually extends Activity {
             return true;
         }
 
-        computersToAdd.add(hostAddress);
+        computersToAdd.add("187.86.201.28");
         return false;
     }
 }

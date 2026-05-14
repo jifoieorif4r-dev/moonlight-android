@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -6,46 +7,67 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".preferences.AddComputerManually" >
+    tools:context=".preferences.AddComputerManually"
+    android:background="#000">
 
     <TextView
         android:id="@+id/manuallyAddPcText"
-        android:text="@string/title_add_pc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:preferKeepClear="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="232dp"
+        android:preferKeepClear="true"
+        android:text="Digite o endereço IP do servidor"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/hostTextView"
-        android:layout_width="wrap_content"
+        style="@android:style/Widget.AutoCompleteTextView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/manuallyAddPcText"
-        android:layout_toLeftOf="@+id/addPcButton"
-        android:layout_toStartOf="@+id/addPcButton"
-        android:layout_marginTop="25dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:layout_toStartOf="@+id/addPcButton"
+        android:layout_toLeftOf="@+id/addPcButton"
+        android:background="@drawable/bg_edittext"
         android:ems="10"
-        android:singleLine="true"
-        android:preferKeepClear="true"
+        android:hint="0.0.0.0"
         android:inputType="textNoSuggestions"
-        android:hint="@string/ip_hint" >
-        
+        android:padding="10dp"
+        android:preferKeepClear="true"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#6A6A6A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manuallyAddPcText">
+
         <requestFocus />
     </EditText>
 
     <Button
         android:id="@+id/addPcButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/manuallyAddPcText"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="#7CFF2B"
         android:preferKeepClear="true"
-        android:text="@android:string/ok"/>
-	
-</RelativeLayout>
+        android:text="@android:string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hostTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

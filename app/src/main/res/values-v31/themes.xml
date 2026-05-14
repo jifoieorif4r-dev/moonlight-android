@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.splashscreen" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Fundo igual ao app -->
+        <item name="android:windowSplashScreenBackground">#111827</item>
+
+        <!-- Remove o ícone -->
+        <item name="android:windowSplashScreenAnimatedIcon">@null</item>
+
+        <!-- Sem animação -->
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+
+    </style>
+</resources>

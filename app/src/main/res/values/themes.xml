@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/Widget.AppTheme.ActionBar.Fullscreen</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.Moonlightclient.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
+
+
+
+    <style name="ThemeOverlay.Moonlightclient.newDarkTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Cores principais -->
+        <item name="colorPrimary">@color/light_blue_600</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+
+        <!-- Fundo -->
+        <item name="colorSurface">#000</item>
+        <item name="android:colorBackground">#000</item>
+
+        <!-- Texto -->
+        <item name="android:textColorPrimary">#000</item>
+    </style>
+</resources>

@@ -109,7 +109,7 @@ public class AppGridAdapter extends GenericGridAdapter<AppView.AppObject> {
                 new NetworkAssetLoader(context, uniqueId),
                 new MemoryAssetLoader(),
                 new DiskAssetLoader(context),
-                BitmapFactory.decodeResource(context.getResources(), R.drawable.no_app_image));
+                BitmapFactory.decodeResource(context.getResources(), R.drawable.logo));
 
         // This will trigger the view to reload with the new layout
         setLayoutId(getLayoutIdForPreferences(prefs));

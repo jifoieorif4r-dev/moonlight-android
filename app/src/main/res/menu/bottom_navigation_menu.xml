@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/control"
+        android:title="Inicio" />
+
+    <item
+
+        android:id="@+id/hbhg"
+        android:icon="@drawable/pata"
+        android:title="Jogos" />
+    <item
+        android:id="@+id/bb"
+        android:icon="@drawable/control"
+        android:title="Sessoes" />
+    <item android:title="Carteira"
+        android:icon="@drawable/control"
+        />
+    <item android:title="Perfil"
+        android:icon="@drawable/control"/>
+</menu>

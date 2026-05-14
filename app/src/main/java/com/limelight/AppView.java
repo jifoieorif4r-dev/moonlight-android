@@ -1,10 +1,13 @@
 package com.limelight;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.List;
 
+import com.limelight.binding.PlatformBinding;
 import com.limelight.computers.ComputerManagerListener;
 import com.limelight.computers.ComputerManagerService;
 import com.limelight.grid.AppGridAdapter;
@@ -97,6 +100,8 @@ public class AppView extends Activity implements AdapterFragmentCallbacks {
                         finish();
                         return;
                     }
+
+
 
                     // Add a launcher shortcut for this PC (forced, since this is user interaction)
                     shortcutHelper.createAppViewShortcut(computer, true, getIntent().getBooleanExtra(NEW_PAIR_EXTRA, false));
@@ -283,6 +288,17 @@ public class AppView extends Activity implements AdapterFragmentCallbacks {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        );
+
+
         // Assume we're in the foreground when created to avoid a race
         // between binding to CMS and onResume()
         inForeground = true;
@@ -333,6 +349,7 @@ public class AppView extends Activity implements AdapterFragmentCallbacks {
 
         appGridAdapter.updateHiddenApps(hiddenAppIds, hideImmediately);
     }
+
 
     private void populateAppGridWithCache() {
         try {
@@ -662,4 +679,8 @@ public class AppView extends Activity implements AdapterFragmentCallbacks {
             return app.getAppName();
         }
     }
+
+
 }
+
+
